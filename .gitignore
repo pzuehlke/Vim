@@ -7,6 +7,6 @@ tex.snippets
 vim_cheat_sheet.aux
 vim_cheat_sheet.log
 vim_cheat_sheet.out
-vim_cheat_sheet.pdf
+vim_cheat_sheet.tex
 vim_cheat_sheet.synctex.gz
 vi-ref.pdf
