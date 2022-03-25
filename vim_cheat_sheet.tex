@@ -1,0 +1,560 @@
+
+%LaTeX
+\synctex=1
+\documentclass[a4paper,10pt]{amsart}
+\usepackage{newpxtext}
+\renewcommand{\sfdefault}{lmss}
+\usepackage[euler-digits,euler-hat-accent]{eulervm}
+\usepackage[bb,wider,cthms]{gewoehn} %Custom package by the author.
+%Options: (bb, bf); (tight, wide, wider); (thms, sthms, cthms)
+%\usepackage{newtxtext,newtxmath}
+\RequirePackage{color,graphicx}
+\usepackage[usenames,dvipsnames]{xcolor}
+\usepackage{hyperref}
+\definecolor{linkcolour}{rgb}{0,0.2,0.6}
+\hypersetup{pdfstartview=XYZ null null 1.0, pdfpagemode=UseNone,colorlinks,
+	breaklinks,urlcolor=linkcolour, linkcolor=linkcolour}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+%\usepackage{times}
+%\usepackage{lmodern}
+\begin{document}
+
+\pagestyle{empty}
+\title[]{Vim Cheat Sheet}
+\author{DreiPfundFlachs -- 
+\href{https://github.com/dreipfundflachs}{\ttt{github.com/dreipfundflachs}}}
+%\date{\today}
+\maketitle
+
+%\setcounter{tocdepth}{1}
+%\tableofcontents
+
+
+
+% ##########################################################################
+% ##########################################################################
+% ########################   Notation   ###########################
+% ##########################################################################
+% ##########################################################################
+\section{Notation}\label{S:notation}
+\thispagestyle{empty}
+
+
+A word is composed of letters, numbers and underscores, but no other characters.
+A Word is any text object separated by whitespaces. 
+
+Optional arguments or
+characters appear within square brackets, as in \ttt{:sp[lit]}, while required
+arguments or complements to operators appear within curly braces, as in
+\ttt{d\{motion\}}.
+
+\ttt{<C-x>} stands for \tsc{ctrl}-x, \ttt{<CR>} for carriage return. The
+expression (IM) next to a command means that it must be executed within
+insert mode. 
+
+
+
+% ##########################################################################
+% ##########################################################################
+% ########################   Marks   ###########################
+% ##########################################################################
+% ##########################################################################
+\section{Marks}\label{S:marks}
+
+\begin{center}
+	\begin{tabular}{ r  c  l } 
+		\tsf{Command} & Mnemonic & \tsf{Description} \vspace{2pt}\\
+		\hline \vspace{-10pt}\\
+		\ttt{m\{char\}} & mark & mark current cursor location with \tsl{char} \\
+		\ttt{`\{char\}} & back(tick) & to cursor location marked by \tsl{char}
+		\\
+		\ttt{'\{char\}} & --- & to line marked by \tsl{char} \\
+		\ttt{``} & back back & to before last jump \\
+		\ttt{`.} & --- & to location of last change \\
+		\ttt{`\^} & --- & to location of last insertion \\
+		\ttt{gi} & go and insert & insert at location of last insertion \\
+		\ttt{`[} & --- & to start of last change or yank \\
+		\ttt{`]} & --- & to end  of last change or yank \\
+		\ttt{`<} & --- & to start of last visual selection \\
+		\ttt{`>} & --- & to end of last visual selection \\
+		\ttt{\%} & --- & toggle between matching delimiters or tags
+	\end{tabular}
+\end{center}
+
+
+% ##########################################################################
+% ##########################################################################
+% ########################   Registers and Macros   ###########################
+% ##########################################################################
+% ##########################################################################
+\section{Registers and Macros}\label{S:registers}
+
+\begin{center}
+	\begin{tabular}{ r  c  l } 
+		\tsf{Command} & Mnemonic & \tsf{Description} \vspace{2pt}\\
+		\hline \vspace{-10pt}\\
+		\ttt{q\{char\}\{edits\}\ttt{q}} & quote unquote & record \tsl{edits} as a macro in 
+		register \tsl{char} \\
+		\ttt{q\{Char\}\{further edits\}q} & quote unquote & append \tsl{further
+		edits} to macro
+		 in register \tsl{char} \\
+		\ttt{@\{char\}} & loop & execute macro stored in register
+		\tsl{char} \\
+		\ttt{@@} & loop & execute macro invoked most recently \\
+	\end{tabular}
+\end{center}
+
+% ##########################################################################
+% ##########################################################################
+% ########################   Registers   ###########################
+% ##########################################################################
+% ##########################################################################
+\section{Registers}\label{S:}
+\begin{center}
+	\begin{tabular}{ r  l } 
+		\tsf{Command} & \tsf{Description} \vspace{2pt}\\
+		\hline \vspace{-10pt}\\
+		\ttt{"\{char\}} & store in or access register \tsl{char}\\
+		\ttt{"\{Char\}} & append to register \tsl{char}\\
+		\ttt{"\_} & black hole register \\
+		\ttt{"+} & clipboard register \\
+		\ttt{"0} & yank register \\
+		\ttt{""} & unnamed register \\
+		\ttt{"=} & expression register \\
+		\ttt{"*} & primary register \\ 
+		\ttt{"\%} & name of current file \\ 
+		\ttt{"\#} & name of alternate file \\ 
+		\ttt{".} & last inserted text \\ 
+		\ttt{":} & last Ex command \\ 
+		\ttt{"/} & last search pattern \\ 
+	\end{tabular}
+\end{center}
+\vfill\eject
+
+% ##########################################################################
+% ##########################################################################
+% ########################   Motion ###########################
+% ##########################################################################
+% ##########################################################################
+\section{Motion}\label{S:motion}
+\
+
+\begin{table}[h!]
+\begin{tabular}{ r  c  l } 
+	\tsf{Command} & \tsf{Mnemonic} & \tsf{Description} \vspace{2pt}\\
+	\hline \vspace{-10pt}\\
+	\ttt{h}, $ \lar $ or \tsc{backspace} & --- & left one column \\
+	\ttt{j} or $ \downarrow $ & --- & down one line \\
+	\ttt{k} or $ \uparrow $ & --- & up one line \\
+	\ttt{l}, $ \rar $ or \tsc{space} & --- & right one column\\
+	\ttt{+} or \tsc{enter} & 1 more & to first character of 
+	    next line \\ 
+	\ttt{-} & 1 less & to first character of previous line \\ 
+	\ttt{\^} & --- & to first nonblank character of current line \\
+	\ttt{\tsl{n}|} & \tsl{n}-th column & to \tsl{n}-th column of
+	current line \\ 
+	\ttt{(} or 	\ttt{)} & --- & to beginning of current (next) sentence \\
+	\ttt{\{} or \ttt{\}} & --- & to beginning of current (next) paragraph \\
+	\ttt{[[} or 	\ttt{]]} & --- & to beginning of current (next) section \\
+	\ttt{0} & initial & cursor to beginning of line \\
+	\ttt{\$} & --- &  cursor to end of line \\
+	\ttt{b} or \ttt{B} & back &   to beginning of previous word (Word) \\
+	\ttt{w} or \ttt{W} & word &  to beginning of next word (Word)  \\ 
+	\ttt{e} or \ttt{E} & end &   to end of current word (Word) \\
+	\ttt{ge} or \ttt{gE} & end & to end of previous word (Word) \\
+	\ttt{<C-l>} & as in shell & redraw screen \\
+	\ttt{<C-f>} & forward & scroll forward one screen \\
+	\ttt{<C-b>} & backward & scroll backward one screen \\
+	\ttt{<C-d>} & down & scroll down half screen \\
+	\ttt{<C-u>} & up & scroll up half screen \\
+	\ttt{M} & middle &  to middle line on screen \\
+	\ttt{H} & home &  to home position (top line of screen) \\
+	\ttt{L} & last &  to last line on screen \\
+	\ttt{<{<}} & shift left & shift current line left
+	by one shiftwidth \\
+	\ttt{>{>}} & shift right & shift current line right by
+	one shiftwidth \\
+	\ttt{\%} & --- & from bracket (, [, \{ or < to 
+	matching partner \\
+	\ttt{/\{pattern\}} or \ttt{?\{pattern\}}& --- & search forward
+	(backward) for \tsl{pattern} \\ 
+	\ttt{*} & --- & search forward for  word under the cursor \\
+	\ttt{n} or \ttt{N} & next & repeat last search in same (opposite) direction
+	\\
+	\ttt{f\tsl{x}} or \ttt{F\tsl{x}} & find &  to next (previous) 
+	character \tsl{x} on current line \\
+	\ttt{t\tsl{x}} or \ttt{T\tsl{x}} & till, to &  to just before (after)
+	character \tsl{x} on current line \\
+	\ttt{;} or \ttt{,} & --- & repeat find command in same (opposite) direction \\
+	\ttt{\tsl{n}G} or \ttt{:\tsl{n}} & go to \tsl{n} &  to line number \tsl{n} \\
+	\ttt{gg} & go go &  to first line of the file \\ 
+	\ttt{G} & Go &  to last line of the file \\ 
+	\ttt{gj}, \ttt{gk} & --- &  down, up one display line \\
+	\ttt{g0}, \ttt{g\$} & --- &  to beginning, end of display line \\
+	\ttt{g\^} & --- &  to first nonblank character of display line \\
+\end{tabular}
+\end{table}
+
+% ##########################################################################
+% ##########################################################################
+% #################   Undelimited Text Objects   ###########################
+% ##########################################################################
+% ##########################################################################
+\section{Undelimited Text Objects}\label{S:undelimited}
+
+\begin{center}
+	\begin{tabular}{ r  c  l } 
+		\tsf{Command} & Mnemonic & \tsf{Description} \vspace{2pt}\\
+		\hline \vspace{-10pt}\\
+	\ttt{iw} & inside word & current word \\
+	\ttt{aw} & around word & current word plus one space \\
+	\ttt{iW} & inside Word & current Word \\
+	\ttt{aW} & around Word & current Word plus one space \\
+	\ttt{is} & inside sentence & current sentence \\
+	\ttt{as} & around sentence & current sentence plus one space \\
+	\ttt{ip} & inside paragraph & current paragraph \\
+	\ttt{ap} & around paragraph & current paragraph plus one blank line \\
+
+	\end{tabular}
+\end{center}
+
+% ##########################################################################
+% ##########################################################################
+% ###################   Delimited Text Objects   ###########################
+% ##########################################################################
+% ##########################################################################
+\section{Delimited Text Objects}\label{S:delimited}
+
+\begin{center}
+	\begin{tabular}{ r  l } 
+		\tsf{Command} & \tsf{Description} \vspace{2pt}\\
+		\hline \vspace{-10pt}\\
+	\ttt{a)} or \ttt{ab} & delimited by parentheses \\
+	\ttt{a\}} or \ttt{aB} & delimited by brackets \\
+	\ttt{a]>'"`} & delimited by ]>'"` \\
+	\ttt{i)} or \ttt{ib} & inside of parentheses \\
+	\ttt{i\}} or \ttt{iB} & inside of brackets \\
+	\ttt{i]>'"`} & inside of ]>'"` \\
+	\end{tabular}
+\end{center}
+
+% ##########################################################################
+% ##########################################################################
+% ########################   Editing ###########################
+% ##########################################################################
+% ##########################################################################
+\section{Editing}\label{S:editing}
+
+\begin{center}
+	\begin{tabular}{ r  c  l } 
+		\tsf{Command} & \tsf{Mnemonic} & \tsf{Description} \vspace{2pt}\\
+		\hline \vspace{-10pt}\\
+		\ttt{a} & append, after & append text to current cursor position\\
+		\ttt{A} & Append, After & append text to end of current line \\
+		\ttt{i} & insert, in front & insert text at current cursor position \\
+		\ttt{I} & Insert, In front & insert text at the beginning of current line \\
+		\ttt{\~} & toggle & change case (lower to upper or upper to lower) \\ 
+		\ttt{x} & x-out (as in typewriters) & delete current character \\
+		\ttt{X} & X-out (as in typewriters) & delete previous character \\
+		\ttt{r} & replace & replace current character by another character \\
+		\ttt{R} & Replace & enter overstrike mode (replace 
+		until Esc) \\
+		\ttt{s} & substitute & substitute current character by text \\
+		\ttt{S} & Substitute & substitute entire current line \\
+		\ttt{d\{motion\}} & delete  & begin a deletion \\
+		\ttt{dd} & delete delete & delete entire current line \\
+		\ttt{D} & Delete & delete from current position to end of the line \\
+		\ttt{c\{motion\}} & change & begin a change \\
+		\ttt{cc} & change change & change entire current line \\
+		\ttt{C} & Change & change from current position to end of the line \\
+		\ttt{p} & paste or put & paste from buffer after cursor position \\
+		\ttt{P} & Paste or Put & paste from buffer before cursor position \\
+		\ttt{gp} & paste or put & paste after cursor, leave it at the end of
+		new text\\
+		\ttt{gP} & Paste or Put & paste before cursor, leave it at the end of
+		new text \\
+		\ttt{y\{motion\}} & yank & begin a yank \\
+		\ttt{yy} or \ttt{Y} & yank yank & copy entire line \\
+		\ttt{$\cdot$} & dot, do it & repeat last editing command \\
+		\ttt{u} & undo & undo last edit \\ 
+		\ttt{U} & Undo & undo last change to line (if cursor has not
+		moved)\\
+		\ttt{R} & redo, restore & restores an undone edit \\
+		\ttt{o} & open & insert blank line below, enter insert
+		mode \\ 
+		\ttt{O} & Open & insert blank line above, enter insert
+		mode\\ 
+		\ttt{J} & join & join current and next line \\
+        \ttt{vipJ} & unflow & unflow (unwrap) current paragraph \\
+		\ttt{gq\{motion\}} & --- & reflow text \\
+		\ttt{g~\{motion\}} & --- & swap case \\
+		\ttt{gu\{motion\}} & --- & make lowercase \\
+		\ttt{gU\{motion\}} & --- & make uppercase \\
+		\ttt{<\{motion\}} & shift left & shift left by one shiftwidth \\
+		\ttt{>\{motion\}} & shift right & shift right by one shiftwidth \\
+		\ttt{=\{motion\}} & --- & autoindent \\
+		\ttt{\&} & substitute & repeat substitution \\
+	\end{tabular}
+
+
+
+\vfill\eject
+
+
+% ##########################################################################
+% ##########################################################################
+% #####################   Insert Mode ###########################
+% ##########################################################################
+% ##########################################################################
+\section{Insert Mode}\label{S:insert}
+
+\begin{center}
+	\begin{tabular}{ r  c  l } 
+		\tsf{Command} & \tsf{Mnemonic} & \tsf{Description} \vspace{2pt}\\
+		\hline \vspace{-10pt} \\
+		\ttt{<C-h>} & as in shell & backspace \\
+		\ttt{<C-w>} & as in shell & delete back one word \\
+		\ttt{<C-u>} & as in shell & delete to start of line \\
+		\ttt{<C-t>} & tab & shift right by one shiftwidth \\
+		\ttt{<C-d>} & decrease & shift left by one shiftwidth \\
+		\ttt{<C-r>\{register\}} & register & paste from \tsl{register} \\
+		\ttt{<C-r>=} & --- & access expression register (=) \\
+
+	\end{tabular}
+\end{center}
+
+% ##########################################################################
+% ##########################################################################
+% ########################   Search   ###########################
+% ##########################################################################
+% ##########################################################################
+\section{Search}\label{S:search}
+
+\begin{center}
+	\begin{tabular}{ r  l } 
+		\tsf{Command} & \tsf{Description} \vspace{2pt}\\
+		\hline \vspace{-10pt} \\
+		\ttt{n} & to next match (w.r.t.~search direction) \\
+		\ttt{N} & to previous match (w.r.t.~search direction) \\
+		\ttt{/[pattern]<CR>} & search forward for \tsl{pattern} (same if empty)  \\
+		\ttt{?[pattern]<CR>} & search backward for \tsl{pattern} (same if empty) \\
+		\ttt{/[pattern]/e<CR>} & search for \tsl{pattern}, placing cursor at
+		the end of match \\
+		\ttt{:\%s/[pattern]//gn} & count number of matches for \tsl{pattern} \\
+		\ttt{\bs v}  & all characters have special
+		meaning except letters, digits, \_\\
+		\ttt{\bs V}  & only \bs, /\,(fwd search), ?\,(bkd
+		search) have special meaning \\
+		\ttt{\bs c}  & force case insensitivity\\
+		\ttt{\bs C}  & force case sensitivity\\
+		\ttt{<[pattern]>} & set boundaries of \tsl{pattern} (needs \ttt{\bs
+		v})\\
+		\ttt{\bs zs}, \ttt{\bs ze} & set start (end) of matches \\
+		\ttt{<C-r>\{register\}} & paste contents of \tsl{register}
+		into search field \\
+		\ttt{<C-r><C-w>} & complete using remainder of current match \\
+
+
+	\end{tabular}
+\end{center}
+
+
+% ##########################################################################
+% ##########################################################################
+% ########################   Window Management   ###########################
+% ##########################################################################
+% ##########################################################################
+\section{Window Management}\label{S:window}
+
+When resizing windows, it is often more convenient to use the mouse. 
+\begin{center}
+	\begin{tabular}{ r  c  l } 
+		\tsf{Command} & \tsf{Mnemonic} & \tsf{Description} \vspace{2pt}\\
+		\hline \vspace{-10pt}\\
+		\ttt{:sp[lit] [file]} or \ttt{<C-w>s} & split & split window
+		horizontally, loading \tsl{file} \\ 
+		\ttt{:vsp[lit] [file]} or \ttt{<C-w>v} & vertical split & split window
+		vertically, loading \tsl{file}\\
+		\ttt{:new [file]} or \ttt{<C-w>n} & new & open \tsl{file} in new
+		window \\
+		\ttt{:clo[se]} or \ttt{<C-w>c}& close & close current window \\
+		\ttt{:on[ly]} or \ttt{<C-w>o} & only & close all windows but current one
+		\\
+		\ttt{:tabe[dit]\,[file]} & tab edit & open \tsl{file}
+		in new tab\\
+		\ttt{:tabc[lose]} & tab close & close current tab \\
+		\ttt{:tabo[nly]} & tab only & close all tabs but current one \\
+		\ttt{[n]}\ttt{gt} or \ttt{[n]<C-Pg\,Dn>} & tab, next page & move to
+		next tab page (or page number \tsl{n})\\
+		\ttt{[n]gT} or \ttt{[n]<C-Pg\,Up>} & Tab, previous page & move one
+		(\tsl{n}) tab pages back\\
+		%\ttt{:tabn[ext] [n]} or \ttt{gt} & tab next & switch to next tab page
+		%(page number \tsl{n}) \\
+		%\ttt{:tabp[revious]} or \ttt{gT} & tab previous & switch to previous tab
+		%page \\
+		\ttt{<C-w>w} or \ttt{<C-w><C-w>}& window, word & cycle to
+		next window \\
+		\ttt{<C-w>W} & previous window & cycle to previous window \\
+		\ttt{<C-w>p} & previous & move to previously accessed window \\
+		\ttt{<C-w>c} & close & close current window (tab) \\
+		\ttt{<C-w>h,\,j,\,k,\,l}  & as in command mode & move to window
+		left, below, above, or right\\
+		\ttt{<C-w>H,\,J,\,K,\,L}  & as in command mode & move current 
+		window left, below, above, or right\\
+		\ttt{<C-w>+} or \ttt{<C-w>-} & plus or minus & increase (decrease)
+		height of  window by 1 line \\
+		\ttt{<C-w>{>}} or \ttt{<C-w><} & plus or minus & increase (decrease)
+		width of window by 1 column\\
+		\ttt{<C-w>{=}} & equal & equalize width and height of all windows \\
+		\ttt{<C-w>{\_}} & move to bottom & maximize height of current window \\
+		\ttt{<C-w>}{|} & --- & maximize width of current window\\
+		\ttt{<C-w>T}& tab & move current window to new tab\\
+
+
+	\end{tabular}
+\end{center}
+
+
+
+% ##########################################################################
+% ##########################################################################
+% ########################   The :set Command   ###########################
+% ##########################################################################
+% ##########################################################################
+\section{The :set Command}\label{S:set}
+
+\begin{center}
+	\begin{tabular}{ r   l } 
+		\tsf{Command} & \tsf{Description} \vspace{2pt}\\
+		\hline \vspace{-10pt}\\
+		\ttt{:set \{option\}} & enable Boolean \tsl{option}; show value of
+		non-Boolean \tsl{option} \\
+		\ttt{:set no\{option\}} & disable Boolean \tsl{option} \\
+		\ttt{:set \{option\}!} & toggle Boolean \tsl{option} \\
+		\ttt{:set \{option\}?} & show value of \tsl{option} \\
+		\ttt{:set \{option\}\&} & set \tsl{option} to default value \\
+		\ttt{:set \{option\}=\{value\}} & set non-Boolean \tsl{option} to
+		\tsl{value} \\
+		\ttt{:setlocal \{option\}[=\{value\}]} & set \tsl{option} (to specified
+			\tsl{value}) within current buffer \\
+		\ttt{:set} & show modified options \\
+		\ttt{:set all} & show all options \\
+	\end{tabular}
+\end{center}
+
+% ##########################################################################
+% ##########################################################################
+% ########################   Visual Mode   ###########################
+% ##########################################################################
+% ##########################################################################
+\section{Visual Mode}\label{S:visual}
+
+\begin{center}
+	\begin{tabular}{ r  l } 
+		\tsf{Command} & \tsf{Description} \vspace{2pt}\\
+		\hline \vspace{-10pt}\\
+		\ttt{v} & select text by character \\
+		\ttt{V} & select text by line \\
+		\ttt{<C-v>} & select text by block \\
+		\ttt{o} & go to other end of selected text \\
+		\ttt{gv} & repeat last selection
+	\end{tabular}
+\end{center}
+
+
+
+% ##########################################################################
+% ##########################################################################
+% ########################   Spell-checker   ###########################
+% ##########################################################################
+% ##########################################################################
+\section{Spell-checker}\label{S:spell}
+
+\begin{center}
+	\begin{tabular}{ r  l } 
+		\tsf{Command} & \tsf{Description} \vspace{2pt}\\
+		\hline \vspace{-10pt}\\
+		\ttt{:set spell} & enable spell-checker \\
+		\ttt{:set spelling=\{language\}}  & set spell-checker to \tsl{language}
+		\\
+		\ttt{]s} & to next misspelling \\
+		\ttt{[s} & to previous misspelling \\
+		\ttt{z=} & suggest corrections for current word \\
+		\ttt{zg} & add current word to spell file \\
+		\ttt{zw} & remove current word from spell file \\
+		\ttt{zug} & revert \ttt{zg} or \ttt{zw} for current word \\
+		\ttt{<C-x>s} or \ttt{<C-x><C-s>} (IM) & suggest corrections to previous misspelling \\
+	\end{tabular}	
+\end{center}
+
+% ##########################################################################
+% ##########################################################################
+% ########################   Ex Command Line   ###########################
+% ##########################################################################
+% ##########################################################################
+\section{Ex Command Line}\label{S:ex}
+
+\begin{center}
+	\begin{tabular}{ r  c  l } 
+		\tsf{Command} & \tsf{Mnemonic} & \tsf{Description} \vspace{2pt}\\
+		\hline \vspace{-10pt}\\
+		\ttt{:[range]d(elete) [x]} & delete & delete specified lines into
+		register \tsl{x} \\
+		\ttt{:[range]y(ank) [x]} & yank & yank specified lines into
+		register \tsl{x} \\
+		\ttt{:[line]pu(t)[x]} & put & paste contents of register \tsl{x} after
+		\tsl{line} \\
+		\ttt{:[range]co(py) \{address\}} & copy & copy specified lines to
+		\tsl{adress} \\
+		\ttt{:[range]m(ove) \{address\}} & move & move specified lines to 
+		address \\
+		\ttt{:[range]j(oin)} & join & join specified lines \\
+		\ttt{:[range]norm(al) \{cmds\}} & normal & execute normal mode
+		\tsl{commands} on each specified line \\
+		\ttt{\$} & --- & last line of the file \\
+		\ttt{\%} & --- & entire file \\
+		\ttt{0} & --- & virtual 0th line \\
+		\ttt{.} & --- & current line \\
+		\ttt{'<} or \ttt{'>} & --- & start (end) of visual selection \\
+        \ttt{<Tab>} or \ttt{<S-Tab>} & --- & autocomplete (resp.~in the reverse
+        direction)  \\
+		\ttt{<C-d>} & --- & list possible completions \\
+		\ttt{<C-r><C-w>} & word & insert word under the cursor at the prompt \\
+		\ttt{<C-p>} or \ttt{<C-n>} & previous/next & scroll backward (forward)
+		through command history \\
+		\ttt{:shell} & shell & start a shell session \\
+		\ttt{:!\{cmd\}} & ! & execute \tsl{command} with the shell \\
+		\ttt{:[range]!\{filter\}} & --- & filter \tsl{range} through external
+		program \tsl{filter} \\
+		\ttt{:read !\{cmd\}} & read & execute \tsl{command} and insert
+		output below cursor \\
+		\ttt{:[range]write !\{cmd\}} & write & execute \tsl{command} with
+		\tsl{range} as input \\
+	
+	\end{tabular}	
+\end{center}
+
+
+
+% ##########################################################################
+% ##########################################################################
+% ########################   Useful Mappings   ###########################
+% ##########################################################################
+% ##########################################################################
+\section{Useful Mappings}\label{S:mappings}
+
+\begin{center}
+	\begin{tabular}{ r  c  l } 
+		\tsf{Characters} & \tsf{Commands} & \tsf{Description} \vspace{2pt}\\
+		\hline
+        \ttt{gb} & \tsc{esc}\,lbi\{\,\tsc{esc}\,ea\}\,\tsc{esc} & Surrond a
+        word by curly braces \\
+        \ttt{Y} & \tsc{esc}\ y\ \$\tsc{esc} & Yank from current position to end
+        of the line
+	\end{tabular}
+\end{center}
+\end{center}
+
+
+\end{document}
