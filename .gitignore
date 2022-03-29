@@ -1,4 +1,3 @@
-.gitignore
 gewoehn.sty
 gvimrc
 jellybeans.vim
@@ -11,3 +10,4 @@ vim_cheat_sheet.out
 vim_cheat_sheet.tex
 vim_cheat_sheet.synctex.gz
 vi-ref.pdf
+.gitignore
