@@ -1,4 +1,4 @@
-This repository contains my vimrc and a Vim cheat sheet.
+Contains my vimrc and my Vim cheat sheet.
 
 ### Recommended resources on Vim
 * D. Neil: [_Practical Vim_](https://pragprog.com/titles/dnvim2/practical-vim-second-edition/) (2nd edition) — Pragmatic Bookshelf, 2015
