@@ -1,3 +1,11 @@
+"         _                        
+"        (_)                       
+" __   __ _  _ __ ___   _ __   ___ 
+" \ \ / /| || '_ ` _ \ | '__| / __|
+"  \ V / | || | | | | || |   | (__ 
+"   \_/  |_||_| |_| |_||_|    \___|
+"                                 
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Sections:
 "    -> 00 - Vundle settings
 "    -> 01 - General
@@ -33,7 +41,7 @@ Plugin 'SirVer/ultisnips'          " UltiSnips
 Plugin 'honza/vim-snippets'        " Collection of snippets for UltiSnips
 Plugin 'tpope/vim-surround'        " Parentheses, brackets, quotes, and more
 Plugin 'flazz/vim-colorschemes'    " Large collection of colorschemes
-Plugin 'dense-analysis/ale'        " Syntax checking plugin for Vim
+" Plugin 'dense-analysis/ale'        " Syntax checking plugin for Vim
 Plugin 'scrooloose/nerdtree'       " Project and file navigation
 Plugin 'bling/vim-airline'         " Lean & mean status/tabline for vim
 Plugin 'vim-airline/vim-airline-themes'     " Themes for airline
@@ -111,7 +119,7 @@ endif
 set ruler
 
 " Height of the command bar:
-set cmdheight=1
+set cmdheight=2
 
 " A buffer becomes hidden when it is abandoned:
 set hidden
@@ -161,7 +169,7 @@ set foldmethod=indent
 set columns=91
 
 " Set number of lines:
-set lines=50
+set lines=53
 
 " Set width of a line:
 set textwidth=79
@@ -171,7 +179,7 @@ set colorcolumn=79
 
 " Set width and height of window:
 set winwidth=91
-set winheight=54
+set winheight=57
 
 " Display numbers relative to the current line:
 set number relativenumber
@@ -199,12 +207,12 @@ endif
 set background=dark
 
 try
-colorscheme badwolf
+colorscheme gruvbox
 catch
 endtry
-" Other nice colorschemes: 
-" base16-tomorrow-night autumnleaf dawn pyte desert
-" jellylight jellybeans gruvbox solarized Tomorrow-Night
+" Other nice dark colorschemes: 
+" onehalfdark badwolf tender molokai zenburn autumnleaf dawn pyte dracula
+" desert jellylight jellybeans solarized Tomorrow-Night purify inkpot
 
 
 " Set font:
